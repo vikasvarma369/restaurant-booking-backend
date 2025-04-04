@@ -5,9 +5,6 @@ import { catchAsyncError } from "../utils/catchAsyncError.js";
 
 export const createReservation = catchAsyncError(async (req, res, next) => {
   
-  console.log("Creating reservation...")
-  console.log(req.body)
-  console.log(req.user)
   const userId = req.user._id; 
   const { restaurantId, date, time, numberOfGuests } = req.body;
 
