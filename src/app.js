@@ -20,11 +20,13 @@ app.use(express.static("public"));
 // Import routes
 import  authRouter  from "./routes/user.route.js";
 import restaurantRouter from "./routes/restaurant.route.js";
+import reservationRouter from "./routes/reserve.route.js";
 
 
 // route declarations
 app.use("/api/v1/user", authRouter);
 app.use("/api/v1/restaurants", restaurantRouter);
+app.use("/api/v1/reserve", reservationRouter);
 
 
 // 404 Handler
