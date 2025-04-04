@@ -9,7 +9,7 @@
   },
   "author": "vikas singh varma",
   "license": "ISC",
-  "description": "A backend application built to support a restaurant table reservation platform.",
+  "description": "A backend application built to support a restaurant table reservation platform. It enables users to discover restaurants, book tables based on availability, and manage their reservations.",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
