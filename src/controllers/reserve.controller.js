@@ -18,6 +18,21 @@ export const createReservation = catchAsyncError(async (req, res, next) => {
     return next(new AppError("Restaurant not found", 404));
   }
 
+  const allExistingReservations = await Reservation.find({
+    restaurant: restaurantId,
+    date,
+    time,
+    status: "confirmed",
+  });
+
+  const totalReserveTables = allExistingReservations.reduce((acc, reservation) => {
+    return acc + reservation.numberOfGuests;
+  }, 0);
+
+  if ( numberOfGuests > restaurant.capacity || (totalReserveTables + numberOfGuests) > restaurant.capacity) {
+    return next(new AppError("Sorry, not enough seats available at this time.", 400));
+  }
+
   const reservation = await Reservation.create({
     restaurant: restaurantId,
     user: userId,

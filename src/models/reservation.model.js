@@ -25,7 +25,7 @@ const reservationSchema = new Schema({
     required: true,
     min: 1,
   },
-  Status: {
+  status: {
     type: String,
     enum: ['confirmed', 'cancelled'],
     default: 'confirmed',
