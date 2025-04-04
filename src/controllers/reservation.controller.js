@@ -1,5 +1,4 @@
 import Reservation from "../models/reservation.model.js";
-import Restaurant from "../models/restaurant.model.js";
 import { AppError } from "../middlewares/error.middleware.js";
 import { catchAsyncError } from "../utils/catchAsyncError.js";
 

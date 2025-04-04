@@ -2,6 +2,7 @@ import Reservation from "../models/reservation.model.js";
 import Restaurant from "../models/restaurant.model.js";
 import { AppError } from "../middlewares/error.middleware.js";
 import { catchAsyncError } from "../utils/catchAsyncError.js";
+import { sendEmail } from "../utils/email.utils.js";
 
 export const createReservation = catchAsyncError(async (req, res, next) => {
   
@@ -40,6 +41,25 @@ export const createReservation = catchAsyncError(async (req, res, next) => {
     time,
     numberOfGuests,
   });
+
+  if (!reservation) {
+    return next(new AppError("Failed to create reservation", 500));
+  }
+
+  // Send email notification to the user 
+  const sendEmailResponse = await sendEmail({
+    userName: req.user.name,
+    userEmail: req.user.email,
+    restaurantName: restaurant.name,
+    restaurantLocation: restaurant.location,
+    date,
+    time,
+    numberOfGuests,
+  })
+
+  if (!sendEmailResponse.success) {
+    return next(new AppError("Failed to send reservation confirmation email", 500));
+  }
 
   res.status(201).json({
     status: true,
