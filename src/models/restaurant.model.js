@@ -13,7 +13,7 @@ const restaurantSchema = new Schema({
     trim: true,
   },
   cuisine: {
-    type: String,
+    type: [String],
     required: true,
   },
   capacity: {
