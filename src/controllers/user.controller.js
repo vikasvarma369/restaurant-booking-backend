@@ -16,14 +16,14 @@ export const registerUser = catchAsyncError( async (req, res) => {
     const { name, email, password } = req.body;
 
     if(!name || !email || !password) {
-      throw new AppError("Please provide all fields", 400);
+      return next(new AppError("Please provide all fields", 400));
     }
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
 
     if(existingUser) {
-      throw new AppError("User already exists", 400);
+      return next(new AppError("User already exists", 400));
     }
 
     const user = await User.create({
@@ -54,21 +54,21 @@ export const loginUser = catchAsyncError(async (req, res) => {
     const { email, password } = req.body;
 
     if(!email || !password) {
-      throw new AppError("Please provide all fields", 400);
+      return next(new AppError("Please provide all fields", 400));
     }
 
     // Check if user exists
     const user = await User.findOne({ email }).select("+password");
 
     if(!user) {
-        throw new AppError("Invalid credentials", 401);
+      return next(new AppError("Invalid credentials", 401));
     }
 
     // Check if password is correct
     const isMatch = await user.comparePassword(password);
 
     if(!isMatch) {
-        throw new AppError("Invalid credentials", 401);
+      return next(new AppError("Invalid credentials", 401));
     }
     
     user.password = undefined; // Remove password from response
