@@ -9,7 +9,7 @@ export const getAllRestaurants = catchAsyncError(async (req, res, next) => {
 
   const restaurants = await Restaurant.find();
   if (!restaurants) {
-    return next(new AppError("No restaurants found", 404));
+    throw new AppError("No restaurants found", 404);
   }
 
   res.status(200).json({
@@ -28,7 +28,7 @@ export const createRestaurant = catchAsyncError (async (req, res, next)=>{
   const { name, location, cuisine, capacity } = req.body;
 
   if (!name || !location || !cuisine || !capacity) {
-    return next(new AppError("Please provide all required fields", 400));
+    throw new AppError("Please provide all required fields", 400);
   }
 
   const restaurant = await Restaurant.create({

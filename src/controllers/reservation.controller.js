@@ -13,11 +13,11 @@ export const cancelReservation = catchAsyncError(async (req, res, next) => {
   });
 
   if (!reservation) {
-    return next(new AppError("Reservation not found", 404));
+    throw new AppError("Reservation not found", 404);
   }
 
   if (reservation.user.toString() !== userId.toString()) {
-    return next(new AppError("You are not authorized to cancel this reservation", 403));
+    throw new AppError("You are not authorized to cancel this reservation", 403);
   }
 
   reservation.status = "cancelled";
@@ -45,7 +45,7 @@ export const getAllReservations = catchAsyncError(async (req, res, next) => {
   );
 
   if (!userAllReservations) {
-    return next(new AppError("No reservations found", 404));
+    throw new AppError("No reservations found", 404);
   }
   res.status(200).json({
     status: true,

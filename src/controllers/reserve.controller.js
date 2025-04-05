@@ -10,13 +10,13 @@ export const createReservation = catchAsyncError(async (req, res, next) => {
   const { restaurantId, date, time, numberOfGuests } = req.body;
 
   if(!restaurantId || !date || !time || !numberOfGuests) {
-    return next(new AppError("Please provide all required fields", 400));
+    throw new AppError("Please provide all required fields", 400);
   }
 
   const restaurant = await Restaurant.findById(restaurantId);
 
   if (!restaurant) {
-    return next(new AppError("Restaurant not found", 404));
+    throw new AppError("Restaurant not found", 404);
   }
 
   // check duplicate reservation
@@ -28,7 +28,7 @@ export const createReservation = catchAsyncError(async (req, res, next) => {
   });
 
   if (existingReservation) {
-    return next(new AppError("You already have a reservation at this time", 400));
+    throw new AppError("You already have a reservation at this time", 400);
   }
 
   const allExistingReservations = await Reservation.find({
@@ -43,7 +43,7 @@ export const createReservation = catchAsyncError(async (req, res, next) => {
   }, 0);
 
   if ( numberOfGuests > restaurant.capacity || (totalReserveTables + numberOfGuests) > restaurant.capacity) {
-    return next(new AppError("Sorry, not enough seats available at this time.", 400));
+    throw new AppError("Sorry, not enough seats available at this time.", 400);
   }
 
   const reservation = await Reservation.create({
@@ -55,7 +55,7 @@ export const createReservation = catchAsyncError(async (req, res, next) => {
   });
 
   if (!reservation) {
-    return next(new AppError("Failed to create reservation", 500));
+    throw new AppError("Failed to create reservation", 500);
   }
 
   // Send email notification to the user 
@@ -70,7 +70,7 @@ export const createReservation = catchAsyncError(async (req, res, next) => {
   })
 
   if (!sendEmailResponse.success) {
-    return next(new AppError("Failed to send reservation confirmation email", 500));
+    throw new AppError("Failed to send reservation confirmation email", 500);
   }
 
   res.status(201).json({
