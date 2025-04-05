@@ -4,7 +4,16 @@ import helmet from "helmet";
 import mongoSanitize from "express-mongo-sanitize";
 import hpp from "hpp";
 import { xss } from "express-xss-sanitizer";
+import { rateLimit } from "express-rate-limit";
 import { errorHandler } from "./middlewares/error.middleware.js";
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, 
+  limit: 100, 
+  message: "Too may requests from this IP, please try later.",
+});
+
+
 const app = express();
 
 app.use(helmet());
@@ -21,6 +30,7 @@ app.use(mongoSanitize());
 app.use(xss());
 app.use(hpp());
 
+app.use("/api", limiter);
 
 // Import routes
 import  authRouter  from "./routes/user.route.js";
