@@ -6,6 +6,9 @@ import hpp from "hpp";
 import { xss } from "express-xss-sanitizer";
 import { rateLimit } from "express-rate-limit";
 import { errorHandler } from "./middlewares/error.middleware.js";
+import cors from "cors";
+
+
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, 
@@ -31,6 +34,10 @@ app.use(xss());
 app.use(hpp());
 
 app.use("/api", limiter);
+
+app.use(cors({
+  origin: process.env.CLIENT_URL || "http://localhost:3000",
+  credentials: true,}));
 
 // Import routes
 import  authRouter  from "./routes/user.route.js";
