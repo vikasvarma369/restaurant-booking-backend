@@ -1,7 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
-import mongoSanitize from "express-mongo-sanitize";
 import hpp from "hpp";
 import { xss } from "express-xss-sanitizer";
 import { rateLimit } from "express-rate-limit";
@@ -28,15 +27,6 @@ app.use(express.urlencoded({ limit: "16kb", extended: true }));
 app.use(cookieParser());
 app.use(express.static("public"));
 
-
-app.use(
-  mongoSanitize({
-    replaceWith: '_', // optional
-    onSanitize: ({ req, key }) => {
-      console.warn(`This request[${key}] is sanitized`);
-    },
-  })
-);
 
 app.use(xss());
 app.use(hpp());
