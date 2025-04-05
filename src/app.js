@@ -29,7 +29,15 @@ app.use(cookieParser());
 app.use(express.static("public"));
 
 
-app.use(mongoSanitize());
+app.use(
+  mongoSanitize({
+    replaceWith: '_', // optional
+    onSanitize: ({ req, key }) => {
+      console.warn(`This request[${key}] is sanitized`);
+    },
+  })
+);
+
 app.use(xss());
 app.use(hpp());
 
