@@ -19,6 +19,18 @@ export const createReservation = catchAsyncError(async (req, res, next) => {
     return next(new AppError("Restaurant not found", 404));
   }
 
+  // check duplicate reservation
+  const existingReservation = await Reservation.findOne({
+    restaurant: restaurantId,
+    user: userId,
+    date,
+    time,
+  });
+
+  if (existingReservation) {
+    return next(new AppError("You already have a reservation at this time", 400));
+  }
+
   const allExistingReservations = await Reservation.find({
     restaurant: restaurantId,
     date,
