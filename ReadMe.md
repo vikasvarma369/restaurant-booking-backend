@@ -45,17 +45,18 @@ A backend application built to support a restaurant table reservation platform. 
 
 
 ## 🔐 Security Middleware Used
+## 🔐 Security Middleware Used
 
 To make the app more secure, these extra tools (called middleware) have been added:
 
-| Package Name               | Why It's Used                                                              |
-|----------------------------|----------------------------------------------------------------------------|
+| Package Name              | Why It's Used                                                              |
+|---------------------------|----------------------------------------------------------------------------|
 | `helmet`                  | Adds security-related headers to protect the app                          |
 | `express-rate-limit`      | Stops too many requests from the same user (helps prevent abuse)          |
+| `express-xss-sanitizer`   | Cleans input to avoid cross-site scripting (XSS) attacks                   |
+| `hpp`                     | Stops users from messing with repeated query parameters                    |
+| `cors`                    | Handles cross-origin requests                                              |
 
-| `express-xss-sanitizer`   | Cleans input to avoid cross-site scripting (XSS) attacks                  |
-| `hpp`                     | Stops users from messing with repeated query parameters                   |
-| `cors`                     |  handling cross-origin requestsparameters                   |
 
 
 ---
